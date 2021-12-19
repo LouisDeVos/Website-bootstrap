@@ -1,58 +1,109 @@
 import React from 'react';
 import Footer from '../Footer';
+import { useState } from 'react';
 
 const BuildingPhysicsApp = () => {
+    const [inputs, setInputs] = useState("");
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(inputs);
+    }
+
     return (
         <>
         <div class="container">
             <div class="py-5 text-center">
-              <img class="mb-4 d-block mx-auto" src="https://www.ugent.be/++theme++ugent/static/images/logo_ugent_nl.svg" alt="UGent Logo" width="80"/>
+              <img class="mb-4 d-block mx-auto" 
+              src="https://www.ugent.be/++theme++ugent/static/images/logo_ugent_nl.svg" 
+              alt="UGent Logo" 
+              width="80"/>
             <h2>Building Physics Calculator</h2>
-            <p class="lead">Calculate transmission heat loss of your building (EN 12831).</p>
+            <p class="lead">Calculate transmission heat loss of a building part (EN 12831).</p>
             </div>
         </div>
 
         <div class="container">
             <h4 class="mb-3">General Info</h4>
-            <form novalidate/>
+            <form novalidate onSubmit={handleSubmit}>
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <label for="projectName" class="form-label">
+                        <label class="form-label">
                             Project Name
                         </label>
-                        <input id="projectName" type="text" class="form-control" placeholder="My fantastic project" required/>
+                        <input 
+                        name="projectName" 
+                        type="text" 
+                        class="form-control"
+                        value={inputs.projectName || ""}
+                        onChange={handleChange} 
+                        placeholder="My fantastic project" 
+                        required/>
                         <div class="invalid-feedback">
                             Valid Project Name is required.
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="numberOfRooms" class="form-label">
-                            How many rooms are there?
+                        <label class="form-label">
+                            Room Temperature (in degrees Celsius)
                         </label>
-                        <input id="numberOfRooms" type="text" class="form-control" placeholder="5" required/>
+                        <input
+                        name="Ti"
+                        type="number"
+                        class="form-control"
+                        value={inputs.Ti || ""}
+                        onChange={handleChange}
+                        placeholder="20 °C"
+                        required/>
                         <div class="invalid-feedback">
-                            Valid number of rooms is required.
+                            Valid indoor temperature is required.
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="ExtTemp" class="form-label">
-                            Outdoor temperature
+                        <label class="form-label">
+                            Number of material layers
                         </label>
-                        <input id="ExtTemp" type="text" class="form-control" placeholder="15 °C" required/>
+                        <input
+                        name="numberOfLayers"
+                        type="number"
+                        class="form-control"
+                        value={inputs.numberOfLayers || ""}
+                        onChange={handleChange}
+                        placeholder="5"
+                        required/>
                         <div class="invalid-feedback">
-                            Valid temperature is required.
+                            Valid number of material layers is required.
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="numberOfRooms" class="form-label">
-                            How many rooms are there?
+                        <label class="form-label">
+                            In which Belgian city is the project located?
                         </label>
-                        <input id="numberOfRooms" type="text" class="form-control" placeholder="5" required/>
+                        <select
+                            value={inputs.Te || ""}
+                            type="number"
+                            onChange={handleChange}
+                            class="form-control"
+                            placeholder="Ghent" 
+                            required>
+                            <option value={-8}>Aalst</option>
+                            <option value={-10}>Aubel</option>
+                            <option value={-8}>Gent</option>
+                        </select>
                         <div class="invalid-feedback">
-                            Valid number of rooms is required.
+                            Valid city is required.
                         </div>
                     </div>
+                    <input type="submit"/>
                 </div>
+            </form>
+            <h3> Your project named "{inputs.projectName}" with an indoor temperature of {inputs.Ti}°C is located in a city with an outdoor temperature of {inputs.Te}.</h3>    
         </div>
 
        
