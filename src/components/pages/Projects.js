@@ -2,9 +2,6 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import '../../App.css'
 import Footer from '../Footer';
-import img1 from '../../images/img1.jpg'
-import img2 from '../../images/img2.jpg'
-import img3 from '../../images/img3.jpg'
 import { Card,Button, Container, Row,Col } from 'react-bootstrap'
 
 function Contact () {
@@ -13,7 +10,7 @@ function Contact () {
     <Container>
       <Row>
         <Col xs={6} md={4}><Card style={{ width: '25rem' }}>
-        <Card.Img variant="top" src={img1} />
+        <Card.Img variant="top" src="http://localhost:5000/Louis-De-Vos/data/images/img1.jpg" />
         <Card.Body>
           <Card.Title>LIVING IN THE GREEN</Card.Title>
           <Card.Text>
@@ -24,7 +21,7 @@ function Contact () {
         </Card.Body>
       </Card></Col>
         <Col xs={6} md={4}><Card style={{ width: '25rem' }}>
-      <Card.Img variant="top" src={img2} />
+      <Card.Img variant="top" src="http://localhost:5000/Louis-De-Vos/data/images/img2.jpg" />
       <Card.Body>
         <Card.Title>KAARLO SARKIAN KATU APARTMENTS</Card.Title>
         <Card.Text>
@@ -37,7 +34,7 @@ Building is characterized by the red concrete façade and the rigorous grid of g
       </Card.Body>
     </Card> </Col>
     <Col xs={6} md={4}><Card style={{ width: '25rem' }}>
-        <Card.Img variant="top" src={img3} />
+        <Card.Img variant="top" src="http://localhost:5000/Louis-De-Vos/data/images/img3.jpg" />
         <Card.Body>
           <Card.Title>THE SURRY</Card.Title>
           <Card.Text>

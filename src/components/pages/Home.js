@@ -2,10 +2,6 @@ import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import '../../App.css'
 import Carousel from 'react-bootstrap/Carousel'
-import Footer from '../Footer';
-import slide1 from '../../images/img1-sm.jpg'
-import slide2 from '../../images/img2-sm.jpg'
-import slide3 from '../../images/img3-sm.jpg'
 
 function Home () {
     return (
@@ -14,7 +10,7 @@ function Home () {
                 <Carousel.Item className="carousel-item">
                     <img
                         className="d-block w-100 img-fluid"
-                        src={slide1}
+                        src="http://localhost:5000/Louis-De-Vos/data/images/img1-sm.jpg"
                         alt="First slide" />
                     <Carousel.Caption>
                         <h3>LIVING IN THE GREEN</h3>
@@ -24,7 +20,7 @@ function Home () {
                 <Carousel.Item className="carousel-item">
                     <img
                         className="d-block w-100 img-fluid"
-                        src={slide2}
+                        src="http://localhost:5000/Louis-De-Vos/data/images/img2-sm.jpg"
                         alt="Second slide" />
                     <Carousel.Caption>
                         <h3>KAARLO SARKIAN KATU APARTMENTS</h3>
@@ -34,7 +30,7 @@ function Home () {
                 <Carousel.Item className="carousel-item">
                     <img
                         className="d-block w-100 img-fluid"
-                        src={slide3}
+                        src="http://localhost:5000/Louis-De-Vos/data/images/img3-sm.jpg"
                         alt="Third slide" />
                     <Carousel.Caption>
                         <h3>THE SURRY</h3>

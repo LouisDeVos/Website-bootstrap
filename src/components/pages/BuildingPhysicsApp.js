@@ -21,10 +21,10 @@ const BuildingPhysicsApp = () => {
         <div class="container">
             <div class="py-5 text-center">
               <img class="mb-4 d-block mx-auto" 
-              src="https://www.ugent.be/++theme++ugent/static/images/logo_ugent_nl.svg" 
-              alt="UGent Logo" 
-              width="80"/>
-            <h2>Building Physics Calculator</h2>
+              src="http://localhost:5000/Louis-De-Vos/data/images/trisco.png" 
+              alt="Trisco Logo" 
+              width="100"/>
+            <h2>Building Physics App</h2>
             <p class="lead">Calculate transmission heat loss of a building part (EN 12831).</p>
             </div>
         </div>

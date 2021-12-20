@@ -23,6 +23,8 @@ class BootstrapNavbar extends React.Component{
     <NavDropdown title="Apps" id="collasible-nav-dropdown">
             <NavDropdown.Item href="/building-physics-app">
               Building Physics App</NavDropdown.Item>
+              <NavDropdown.Item href="/building-physics-db">
+              Building Physics Database</NavDropdown.Item>
       </NavDropdown>
     </Nav>
     <Form className="d-flex">

@@ -1,26 +1,32 @@
 import React from 'react';
 import Footer from '../Footer';
-import {useState} from "react"
+import {useState, useRef} from "react"
 import mime from "mime-types"
-import {v4} from 'uuid'
+import {v1,v4} from 'uuid'
 import {newEngine} from '@comunica/actor-init-sparql'
 
 const Contact = () => {
-    const [amount, setAmount] = useState(1)
-    const [cards, setCards] = useState([])
-    const [file, setFile] = useState(null)
-    const [name, setName] = useState("")
-    const [source, setSource] = useState("http://localhost:5000/Louis-De-Vos/profile/card#me")
+    const [file, setFile] = useState(null);
+    const [reqMat, setReqMat] = useState(null);
+    const [source, setSource] = useState("http://localhost:5000/Louis-De-Vos/profile/card#me");
+    //const [lambdaDisplay] = useRef("");
+    //const [projectNameDisplay] = useRef("")
   
-    async function fetchData(e) {
-      const requestOptions = {
-        method: "GET"
-      }
-      const data = await fetch(`https://deckofcardsapi.com/api/deck/ihx57swbij9m/draw/?count=${amount}`, requestOptions)
-      console.log(data)
-      const body = await data.json()
-      console.log(`body`, body)
-      setCards(body.cards)
+  
+    async function fetchLambda(e) {
+      const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/materials/${reqMat}`)
+      const data = await response.json();
+      const {lambda} = data;
+      console.log(lambda);
+      document.getElementById('lambda').textContent = lambda
+    }
+
+    async function fetchProject(e) {
+      const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/materials/${reqMat}`)
+      const data = await response.json();
+      const {projectName} = data;
+      console.log(projectName);
+      document.getElementById('projectName').textContent = projectName
     }
     
     // upload data to solid pod
@@ -53,34 +59,24 @@ const Contact = () => {
   }
 
     return (
-         <div>
-      <div>
-        <h3>QUERY</h3>
-      <p>Welcome, {name}</p>
-      <input type="text" value={source} onChange={e => setSource(e.target.value)}/>
-      <button onClick={doQuery()}>Find my name</button>
-      </div>
-      <hr/>
-<div>
-  <h3>UPLOAD FILE</h3>
-  <input
-        type="file"
-        onChange={e => setFile(e.target.files[0])}
-      />
-      <button onClick={uploadData}>Upload</button>
-      <hr/>
-</div>
-<div>
-  <h3>FETCH CARDS API</h3>
-  <input value={amount} onChange={e => setAmount(e.target.value)}/>
-  <button onClick={fetchData}>Fetch</button>
-      <div>
-        {cards.map(card => {
-          return <img src={card.image}/>
-        })}
-      </div>
-</div>
-    </div>
+   <><div>
+        <h3>UPLOAD FILE</h3>
+        <input
+          type="file"
+          onChange={e => setFile(e.target.files[0])} />
+        <button onClick={uploadData}>Upload</button>
+        <hr />
+      </div><div>
+          <h3>MATERIAL LAMBDA INFORMATION</h3>
+          <input value={reqMat} onChange={e => setReqMat(e.target.value)} />
+          <button onClick={fetchLambda}>Fetch</button>
+          <p id="lambda"></p>
+        </div><div>
+          <h3>MATERIAL PROJECT INFORMATION</h3>
+          <input value={reqMat} onChange={e => setReqMat(e.target.value)} />
+          <button onClick={fetchProject}>Fetch</button>
+          <p id="projectName"></p>
+        </div></>   
   );
 }
 

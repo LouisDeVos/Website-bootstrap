@@ -8,6 +8,7 @@ import Projects from './components/pages/Projects';
 import BuildingPhysicsApp from './components/pages/BuildingPhysicsApp';
 import AboutUs from './components/pages/AboutUs';
 import Contact from './components/pages/Contact';
+import BuildingPhysicsDB from './components/pages/BuildingPhysicsDB';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/' exact element={<Home/>}/>
         <Route path='/projects' exact element={<Projects/>}/>
         <Route path='/building-physics-app' exact element={<BuildingPhysicsApp/>}/>
+        <Route path='/building-physics-db' exact element={<BuildingPhysicsDB/>}/>
         <Route path='/about-us' exact element={<AboutUs/>}/>
         <Route path='/contact' element={<Contact/>}/>
       </Routes>
