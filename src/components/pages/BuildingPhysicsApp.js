@@ -1,61 +1,100 @@
 import React from 'react';
 import Footer from '../Footer';
-import { useState } from 'react';
+import { useState ,useEffect } from 'react';
 import { Form, Col, Row, Button, InputGroup, FormControl } from 'react-bootstrap';
 
 const BuildingPhysicsApp = () => {
-    const [projectName, setProjectName] = useState(null);
-    const [owner, setOwner] = useState(null);
-    const [Ti, setTi] = useState(null);
-    const [A, setA] = useState(null);
-    const [numberOfLayers, setNumberOfLayers] = useState(null);
-    const [projectCity, setProjectCity] = useState(null);
-    const [transType, setTransType] = useState(null);
-    const [orientation, setOrientation] = useState(null);
-    const [layNumber, setLayNumber] = useState(null);
-    const [layThickness, setLayThickness] = useState(null);
-    const [layMat,setLayMat]= useState(null);
+    const [projectName, setProjectName] = useState("");
+    const [projectOwner, setProjectOwner] = useState("");
+    const [projectCity, setProjectCity] = useState("");
+    const [projectTe, setProjectTe] = useState(0);
+    const [projectTi, setProjectTi] = useState(0);
+    const [projectA, setProjectA] = useState(0);
+    const [projectTransType, setProjectTransType] = useState("");
+    const [projectNumberOfLayers, setProjectNumberOfLayers] = useState(0);
+    const [projectOrientation, setProjectOrientation] = useState("");
+
+    const [matNumber,setMatNumber] = useState("");
+    const [matName, setMatName] = useState("");
+    const [matLambda, setMatLambda] = useState(0);
+    const [matThickness, setMatThickness] = useState(0);
+    const [matR, setMatR] = useState(0);
+    
 
     async function uploadInfo() {
-        var requestOptionsInfo = {
+        var requestOptionsProject = {
           method: "PUT",
           headers: { "Content-Type": 'application/JSON' },
           body: JSON.stringify({
             name: projectName,
-            owner: owner,
+            owner: projectOwner,
             city: projectCity,
-            temp: Ti,
-            surface: A,
-            type: transType,
-            layers: numberOfLayers,
-            orientation: orientation
+            Te: projectTe,
+            Ti: projectTi,
+            A: projectA,
+            transType: projectTransType,
+            numberOfLayers: projectNumberOfLayers,
+            orientation: projectOrientation
           }),
         };
     
         await fetch(
             `http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/general-info`,
-          requestOptionsInfo);
+          requestOptionsProject);
       }
 
       async function uploadContruction() {
-        var requestOptionsCity = {
+        const matR= matThickness/matLambda;
+        var requestOptionsMat = {
           method: "PUT",
           headers: { "Content-Type": 'application/JSON' },
           body: JSON.stringify({
-            layerNumber: layNumber,  
-            material: layMat,
-            thickness: layThickness
+            number: matNumber,
+            name: matName,
+            lambda: matLambda,
+            thickness: matThickness,
+            R: matR
           }),
         };
     
         await fetch(
-            `http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction/${layNumber}`,
-          requestOptionsCity
+            `http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction/${matNumber}`,
+          requestOptionsMat
         );
       }  
 
 
-  
+  async function Calculate() {
+        const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/general-info`)
+        const data = await response.json();
+        const {numberOfLayers, Te, Ti, A, transType, orientation} = data;
+        console.log(numberOfLayers);
+        setProjectNumberOfLayers(numberOfLayers);
+        setProjectTe(Te);
+        setProjectTi(Ti);
+        setProjectA(A);
+        setProjectTransType(transType);
+        setProjectOrientation(orientation);
+      
+
+      for (let i = 1; i <= projectNumberOfLayers; i++) {
+        const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction/${i}`)
+        const data = await response.json();
+        const {number, name, lambda, thickness, R} = data;
+        setMatNumber(number);
+        setMatName(name);
+        setMatLambda(lambda);
+        setMatThickness(thickness);
+        setMatR(R);
+
+      
+        };
+    
+        
+      }
+    
+
+
     return (
         <>
         <div class="container">
@@ -92,7 +131,7 @@ const BuildingPhysicsApp = () => {
               placeholder="A very lucky owner" 
               required
               type="text"
-              onChange={e => setOwner(e.target.value)}
+              onChange={e => setProjectOwner(e.target.value)}
               />  
             </InputGroup>
         </Col>
@@ -105,7 +144,24 @@ const BuildingPhysicsApp = () => {
               required
               type="text"
               onChange={e => setProjectCity(e.target.value)}
-              />  
+              />     
+            </InputGroup>
+        </Col>
+        <Col className="mb">
+            <Form.Label>Outdoor Temperature</Form.Label>
+            <InputGroup className="mb-2">
+            <Form.Select defaultValue="Choose..." onChange={(e) => {
+              const selectedTemperature = e.target.value;
+              setProjectTe(selectedTemperature);
+              }}>
+             <option value="null">Choose...</option>
+             <option value={-7}>-7</option>
+             <option value={-8}>-8</option>
+             <option value={-9} >-9</option>
+             <option value={-10}>-10</option>
+             <option value={-11}>-11</option>
+            </Form.Select>
+            <InputGroup.Text>°C</InputGroup.Text>
             </InputGroup>
         </Col>
         <Col className="mb">
@@ -116,7 +172,7 @@ const BuildingPhysicsApp = () => {
               placeholder="20" 
               required
               type="number"
-              onChange={e => setTi(e.target.value)}
+              onChange={e => setProjectTi(e.target.value)}
               />
             <InputGroup.Text>°C</InputGroup.Text>  
             </InputGroup>
@@ -129,7 +185,7 @@ const BuildingPhysicsApp = () => {
             <Form.Control
               required
               type="number"
-              onChange={e => setNumberOfLayers(e.target.value)}
+              onChange={e => setProjectNumberOfLayers(e.target.value)}
               placeholder="5"
             />
             </InputGroup>
@@ -142,7 +198,7 @@ const BuildingPhysicsApp = () => {
               placeholder="1" 
               required
               type="number"
-              onChange={e => setA(e.target.value)}
+              onChange={e => setProjectA(e.target.value)}
               />
               <InputGroup.Text>m²</InputGroup.Text>   
             </InputGroup>
@@ -150,18 +206,24 @@ const BuildingPhysicsApp = () => {
         <Col className="mb">
             <Form.Label>Orientation</Form.Label>
             <InputGroup className="mb-2">
-            <Form.Select defaultValue="Choose..." onChange={e => setOrientation(e.target.value)}>
-             <option>Choose...</option>
-             <option>Wall</option>
-             <option>Ceiling</option>
-             <option>Floor</option>
+            <Form.Select defaultValue="Choose..." onChange={(e) => {
+              const selectedOrientation = e.target.value;
+              setProjectOrientation(selectedOrientation);
+              }}>
+             <option value="null">Choose...</option>
+             <option value="H">Wall</option>
+             <option value="VUp">Ceiling</option>
+             <option value="VDown">Floor</option>
             </Form.Select>
             </InputGroup>
         </Col>
         <Col className="mb">
             <Form.Label>Type of Transmision</Form.Label>
             <InputGroup className="mb-2">
-            <Form.Select defaultValue="Choose..." onChange={e => setTransType(e.target.value)}>
+            <Form.Select defaultValue="Choose..." onChange={(e) => {
+              const selectedTransType = e.target.value;
+              setProjectTransType(selectedTransType);
+              }}>
              <option>Choose...</option>
              <option value="ie">Directly to the exterior</option>
              <option value="iue">Through unheated space</option>
@@ -195,12 +257,12 @@ const BuildingPhysicsApp = () => {
             </InputGroup>
         </Col>
         <Col className="mb">
-            <Form.Label>Layer Number</Form.Label>
+            <Form.Label>Index (inside to outside)</Form.Label>
             <InputGroup className="mb-2">
             <Form.Control
               required
               type="number"
-              onChange={e => setLayNumber(e.target.value)}
+              onChange={e => setMatNumber(e.target.value)}
               placeholder="1"
             />
             </InputGroup>
@@ -211,9 +273,22 @@ const BuildingPhysicsApp = () => {
             <Form.Control
               required
               type="text"
-              onChange={e => setLayMat(e.target.value)}
+              onChange={e => setMatName(e.target.value)}
               placeholder="rock wool"
             />
+            </InputGroup>
+        </Col>
+        <Col className="mb">
+            <Form.Label>Heat Conductivity (lambda)</Form.Label>
+            <InputGroup className="mb-2">
+            <FormControl 
+              id="inlineFormInputGroup" 
+              placeholder="0.034" 
+              required
+              type="number"
+              onChange={e => setMatLambda(e.target.value)}
+              />
+            <InputGroup.Text>W/mK</InputGroup.Text>  
             </InputGroup>
         </Col>
         <Col className="mb">
@@ -224,13 +299,35 @@ const BuildingPhysicsApp = () => {
               placeholder="0.20" 
               required
               type="number"
-              onChange={e => setLayThickness(e.target.value)}
+              onChange={e => setMatThickness(e.target.value)}
               />
             <InputGroup.Text>m</InputGroup.Text>  
             </InputGroup>
         </Col>
         <div className="d-grid gap-3">
         <Button onClick={uploadContruction} className="btn-block" type="submit">Submit</Button>
+        </div>
+        </Row> 
+      </Form>
+      </div>
+
+      <div className='m-5'>
+     <h4 className="mb-3">Calculation</h4>
+     <Form noValidate>
+        <Row className="align-items-center">
+        <Col className="mb">
+            <Form.Label>Project Name</Form.Label>
+            <InputGroup className="mb-2">
+            <Form.Control
+              required
+              type="text"
+              onChange={e => setProjectName(e.target.value)}
+              placeholder="My fantastic project"
+            />
+            </InputGroup>
+        </Col>
+        <div className="d-grid gap-3">
+        <Button onClick={Calculate} className="btn-block btn-danger" type="submit">Calculate</Button>
         </div>
         </Row> 
       </Form>

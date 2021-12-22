@@ -13,15 +13,15 @@ const Contact = () => {
     //const [projectNameDisplay] = useRef("")
   
   
-    async function fetchLambda(e) {
-      const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/materials/${reqMat}`)
+    async function fetchLambda() {
+      const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/MyFirstProject/construction/${reqMat}`)
       const data = await response.json();
       const {lambda} = data;
       console.log(lambda);
       document.getElementById('lambda').textContent = lambda
     }
 
-    async function fetchProject(e) {
+    async function fetchProject() {
       const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/materials/${reqMat}`)
       const data = await response.json();
       const {projectName} = data;
