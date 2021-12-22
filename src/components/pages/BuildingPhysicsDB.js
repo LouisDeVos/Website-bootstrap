@@ -54,7 +54,7 @@ const BuildingPhysicsDB = () => {
         <div class="container">
             <div class="py-5 text-center">
               <img class="mb-4 d-block mx-auto" 
-              src="http://localhost:5000/Louis-De-Vos/data/images/trisco-db.png" 
+              src="http://localhost:5000/Louis-De-Vos/data/images/buildingPhysics/trisco-db.png" 
               alt="Trisco DB Logo" 
               width="80"/>
             <h2>Building Physics Database</h2>
