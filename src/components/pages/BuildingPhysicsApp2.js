@@ -103,12 +103,12 @@ const BuildingPhysicsAppCalc = () => {
         </Row>
         <Row>
         <Col>
-        <h3 className="py-3">U = {U.toFixed(3)} W/m²K</h3>
+        <h5 className='text-center'>Thermal Transmittance</h5><h3 className="py-1 border border-success text-center rounded bg-success text-white">U = {U.toFixed(3)} W/m²K</h3>
         </Col>
         <Col>
         </Col>
         <Col>
-        <div className='border text-center'><h3 className="py-3"><span>&#934;</span><sub>total</sub> = {heat.toFixed(3)} W</h3></div>
+        <h5 className='text-center'>Transmission Heat Loss</h5><h3 className="py-1 border border-success text-center rounded bg-success text-white"><span>&#934;</span> = {heat.toFixed(3)} W</h3>
         </Col>
         </Row> 
       </Form>

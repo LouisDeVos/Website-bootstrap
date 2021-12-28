@@ -120,17 +120,25 @@ const BuildingPhysicsAppMat = () => {
         </Col>
         <div> 
         <Button onClick={addMat} className="btn mb-2 btn-danger" type="button">Submit</Button>
-        <p><i>Click one extra time after the last material to compute the grand total.</i></p>
+        <p><i>Click <u>one</u> extra time after the last material to compute the grand total.</i></p>
         </div>
         </Row>
         <Row>
+        <Col>
         <ul>
               {mats.map(item => (
                 <li key={item.id}>{item.id+1} | {item.name} | R = {item.res} m²K/W</li>
               ))}
             </ul>
-            <h3 className="py-3">R<sub>total</sub> = {matResSum.toFixed(3)} m²K/W</h3>
-
+            
+        </Col> 
+        <Col></Col>
+        <Col></Col>
+        </Row>
+        <Row>
+        <Col></Col>  
+        <Col><h5 className='text-center'>Thermal Resistivity</h5><h3 className="py-2 border border-success text-center rounded bg-success text-white">R<sub>total</sub> = {matResSum.toFixed(3)} m²K/W</h3></Col>
+        <Col></Col> 
         </Row>
         <Row>
         <Col className="mb">
@@ -147,7 +155,7 @@ const BuildingPhysicsAppMat = () => {
         </Col> 
         <div>
         <Button href="/building-physics-app" className="btn mb-2 btn-primary" type="button">Back</Button>  
-        <Button onClick={saveRtot} className="btn mb-2 btn-danger" type="button">Save to Project</Button>
+        <Button onClick={saveRtot} className="btn mb-2 btn-danger" type="button">Save R<sub>total</sub> to Project</Button>
         <Button href="/building-physics-app2" className="btn mb-2 btn-primary" type="button">Next</Button>
         </div> 
         </Row> 
