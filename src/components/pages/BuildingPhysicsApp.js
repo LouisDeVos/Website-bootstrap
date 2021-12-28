@@ -180,9 +180,9 @@ const BuildingPhysicsApp = () => {
               }}>
              <option>Choose...</option>
              <option value="ie">Directly to the exterior</option>
-             <option value="iue">Through unheated space</option>
-             <option value="ig">Through the ground</option>
-             <option value="ij">To or from spaces at different temperatures</option>
+             <option value="iue" disabled>Through unheated space</option>
+             <option value="ig" disabled>Through the ground</option>
+             <option value="ij" disabled>To or from spaces at different temperatures</option>
             </Form.Select>
             </InputGroup>
         </Col>

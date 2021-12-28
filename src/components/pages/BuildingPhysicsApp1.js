@@ -2,84 +2,60 @@ import React from 'react';
 import Footer from '../Footer';
 import { useState ,useRef } from 'react';
 import { Form, Col, Row, Button, InputGroup, FormControl } from 'react-bootstrap';
+import _ from 'lodash';
 
 const BuildingPhysicsAppMat = () => {
     const [projectName, setProjectName] = useState("");
 
-    const [matNumber,setMatNumber] = useState(0);
+    /*const [matNumber,setMatNumber] = useState(0);*/
+    const [mats, setMats] = useState([]);
     const [matName, setMatName] = useState("");
     const [matLambda, setMatLambda] = useState(0);
     const [matThickness, setMatThickness] = useState(0);
 
-    const [matR, setMatR] = useState(0);
+    const [matResSum, setMatResSum] = useState(0);
     
 
-   
-    async function uploadContruction() {
-        const matR= matThickness/matLambda;
+    
+      
+    
+      
+    
+    async function saveRtot() {
         const d= new Date();
         var requestOptionsMat = {
           method: "PUT",
           headers: { "Content-Type": 'application/JSON' },
           body: JSON.stringify({
-            number: matNumber,
-            name: matName,
-            lambda: matLambda,
-            thickness: matThickness,
-            R: matR,
+            Rsum: matResSum,
             updated: d
           }),
         };
     
         await fetch(
-            `http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction/${matNumber}`,
+            `http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction-info`,
           requestOptionsMat
         );
       } 
+
       
-      /*useEffect((event) => {
+      const addMat = event => {
         event.preventDefault();
-        setMatItems([
-          ...matItems,
+        const matR= matThickness/matLambda;
+        setMats([
+          ...mats,
           {
-            id: matItems.length,
-            number: matNumber,
-            name: matName
+            'id': mats.length,
+            'name': matName,
+            'res': Number(matR.toFixed(3))
           }
         ]);
-        setMatNumber(prevMatNumber => Number(prevMatNumber) + 1);
+        setMatResSum(_.sumBy(mats, 'res'));
         setMatName("");
-      },matNumber); */
-
-
-  /*async function Calculate() {
-        const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/general-info`)
-        const data = await response.json();
-        const {numberOfLayers, Te, Ti, A, transType, orientation} = data;
-        console.log(numberOfLayers);
-        setProjectNumberOfLayers(numberOfLayers);
-        setProjectTe(Te);
-        setProjectTi(Ti);
-        setProjectA(A);
-        setProjectTransType(transType);
-        setProjectOrientation(orientation);*/
-      
-
-      /*for (let i = 1; i <= projectNumberOfLayers; i++) {
-        const response = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction/${i}`)
-        const data = await response.json();
-        const {number, name, lambda, thickness, R} = data;
-        setMatNumber(number);
-        setMatName(name);
-        setMatLambda(lambda);
-        setMatThickness(thickness);
-        setMatR(R);
-
-      
-        };*/
+        setMatLambda(0);
+        setMatThickness(0);
+      }; 
     
-        
-      
     
 
 
@@ -98,32 +74,8 @@ const BuildingPhysicsAppMat = () => {
      <div class="container">
      <div className='m-5'>
      <h4 className="mb-3">Construction Properties</h4>
-     <Form noValidate>
-        <Row className="align-items-center">
-        <Col className="mb">
-            <Form.Label>Project Name</Form.Label>
-            <InputGroup className="mb-2">
-            <Form.Control
-              required
-              type="text"
-              value={projectName}
-              onChange={e => setProjectName(e.target.value)}
-              placeholder="My fantastic project"
-            />
-            </InputGroup>
-        </Col>
-        <Col className="mb">
-            <Form.Label>Index (inside to outside)</Form.Label>
-            <InputGroup className="mb-2">
-            <Form.Control
-              required
-              type="number"
-              value={matNumber}
-              onChange={e => setMatNumber(Number(e.target.value))}
-              placeholder="1"
-            />
-            </InputGroup>
-        </Col>    
+     <Form>
+        <Row className="align-items-center">   
         <Col className="mb">
             <Form.Label>Material</Form.Label>
             <InputGroup className="mb-2">
@@ -166,36 +118,46 @@ const BuildingPhysicsAppMat = () => {
             <InputGroup.Text>m</InputGroup.Text>  
             </InputGroup>
         </Col>
-        <div>
-        <Button onClick={uploadContruction} className="btn mb-2 btn-danger" type="submit">Submit</Button>
-        <Button href="/building-physics-app1" className="btn mb-2 btn-primary" type="button">Next</Button>
+        <div> 
+        <Button onClick={addMat} className="btn mb-2 btn-danger" type="button">Submit</Button>
+        <p><i>Click one extra time after the last material to compute the grand total.</i></p>
         </div>
-        </Row> 
-      </Form>
-      </div>
+        </Row>
+        <Row>
+        <ul>
+              {mats.map(item => (
+                <li key={item.id}>{item.id+1} | {item.name} | R = {item.res} m²K/W</li>
+              ))}
+            </ul>
+            <h3 className="py-3">R<sub>total</sub> = {matResSum.toFixed(3)} m²K/W</h3>
 
-      <div className='m-5'>
-     <h4 className="mb-3">Calculation</h4>
-     <Form noValidate>
-        <Row className="align-items-center">
+        </Row>
+        <Row>
         <Col className="mb">
             <Form.Label>Project Name</Form.Label>
             <InputGroup className="mb-2">
             <Form.Control
               required
               type="text"
+              value={projectName}
               onChange={e => setProjectName(e.target.value)}
               placeholder="My fantastic project"
             />
             </InputGroup>
-        </Col>
-        <div className="d-grid gap-3">
-        <Button /*onClick={}*/ className="btn-block btn-danger" type="submit">Calculate</Button>
-        </div>
+        </Col> 
+        <div>
+        <Button href="/building-physics-app" className="btn mb-2 btn-primary" type="button">Back</Button>  
+        <Button onClick={saveRtot} className="btn mb-2 btn-danger" type="button">Save to Project</Button>
+        <Button href="/building-physics-app2" className="btn mb-2 btn-primary" type="button">Next</Button>
+        </div> 
         </Row> 
       </Form>
       </div>
+
+     
       </div>
+
+    
 
        
 

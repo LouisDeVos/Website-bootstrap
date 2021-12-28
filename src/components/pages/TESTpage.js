@@ -4,6 +4,7 @@ import {useState, useRef} from "react"
 import mime from "mime-types"
 import {v1,v4} from 'uuid'
 import {newEngine} from '@comunica/actor-init-sparql'
+import _ from 'lodash';
 
 const TESTpage = () => {
     const [file, setFile] = useState(null);
@@ -30,20 +31,32 @@ const TESTpage = () => {
       document.getElementById('projectName').textContent = projectName
     }
 
-    const [items, setItems] = useState([]);
-    const [itemName, setItemName] = useState("");
+    const [mats, setMats] = useState([]);
+    const [matName, setMatName] = useState("");
+    const [matLambda, setMatLambda] = useState(0);
+    const [matThickness, setMatThickness] = useState(0);
+
+    const [matResSum, setMatResSum] = useState(0);
   
-    const addItem = event => {
+    
+    const addMat = event => {
       event.preventDefault();
-      setItems([
-        ...items,
+      const matR= matThickness/matLambda;
+      setMats([
+        ...mats,
         {
-          id: items.length,
-          name: itemName
+          'id': mats.length,
+          'name': matName,
+          'res': Number(matR.toFixed(3))
         }
       ]);
-      setItemName("");
+      setMatResSum(_.sumBy(mats, 'res'));
+      setMatName("");
+      setMatLambda(0);
+      setMatThickness(0);
     };
+
+    
     
     // upload data to solid pod
     async function uploadData() {
@@ -102,22 +115,35 @@ const TESTpage = () => {
             
               <div>
               
-            <form onSubmit={addItem}>
+            <form >
               <label>
                 <input
-                  name="item"
+                  name="matName"
                   type="text"
-                  value={itemName}
-                  onChange={e => setItemName(e.target.value)}
+                  value={matName}
+                  onChange={e => setMatName(e.target.value)}
                 />
+                <input
+                  name="matLambda"
+                  type="number"
+                  value={matLambda}
+                  onChange={e => setMatLambda(e.target.value)}
+                />
+                <input
+                  name="matThickness"
+                  type="text"
+                  value={matThickness}
+                  onChange={e => setMatThickness(e.target.value)}
+                />
+                <button onClick={addMat}>add to list</button>
               </label>
             </form>
             <ul>
-              {items.map(item => (
-                <li key={item.id}>{item.name}</li>
+              {mats.map(item => (
+                <li key={item.id}>{item.id+1} | {item.name} | R = {item.res} m²K/W</li>
               ))}
             </ul>
-          
+            <p>R<sub>total</sub> = {matResSum.toFixed(3)} m²K/W</p>
               </div></>
   );
 }
