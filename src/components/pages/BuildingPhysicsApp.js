@@ -1,8 +1,7 @@
 import React from 'react';
 import Footer from '../Footer';
-import { useState ,useRef } from 'react';
+import { useState } from 'react';
 import { Form, Col, Row, Button, InputGroup, FormControl } from 'react-bootstrap';
-import BuildingPhysicsAppMat from './BuildingPhysicsApp1';
 
 const BuildingPhysicsApp = () => {
     const [projectName, setProjectName] = useState("");
@@ -46,7 +45,7 @@ const BuildingPhysicsApp = () => {
     return (
         <>
         <div class="container">
-            <div class="py-5 text-center">
+            <div class="pt-5 text-center">
               <img class="mb-4 d-block mx-auto" 
               src="http://localhost:5000/Louis-De-Vos/data/images/buildingPhysics/trisco.png" 
               alt="Trisco DB Logo" 

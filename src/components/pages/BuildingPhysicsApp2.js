@@ -1,15 +1,15 @@
 import React from 'react';
 import Footer from '../Footer';
 import { useState } from 'react';
-import { Form, Col, Row, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, Col, Row, Button, InputGroup, } from 'react-bootstrap';
 
 const BuildingPhysicsAppCalc = () => {
     const [projectName, setProjectName] = useState(null);
 
-    const [Te, setTe] = useState(0);
-    const [Ti, setTi] = useState(0);
-    const [A, setA] = useState(0);
-    const [orientation, setOrientation] = useState(""); 
+    //const [Te, setTe] = useState(0);
+    //const [Ti, setTi] = useState(0);
+    //const [A, setA] = useState(0);
+    //const [orientation, setOrientation] = useState(""); 
 
     const [matResSum, setMatResSum] = useState(0);
 
@@ -22,10 +22,10 @@ const BuildingPhysicsAppCalc = () => {
         const data1 = await response1.json();
         const {A, Ti, Te, orientation} = data1;
         console.log(A, Ti, Te, orientation);
-        setA(A);
-        setTi(Ti);
-        setTe(Te);
-        setOrientation(orientation);
+        //setA(A);
+        //setTi(Ti);
+        //setTe(Te);
+        //setOrientation(orientation);
         const response2 = await fetch(`http://localhost:5000/Louis-De-Vos/data/projects/${projectName}/construction-info`)
         const data2 = await response2.json();
         const {Rsum} = data2;
@@ -67,7 +67,7 @@ const BuildingPhysicsAppCalc = () => {
     return (
         <>
         <div className="container">
-            <div className="py-5 text-center">
+            <div className="pt-5 text-center">
               <img className="mb-4 d-block mx-auto" 
               src="http://localhost:5000/Louis-De-Vos/data/images/buildingPhysics/trisco.png" 
               alt="Trisco DB Logo" 
@@ -79,7 +79,7 @@ const BuildingPhysicsAppCalc = () => {
      
        <div className='container'>
       <div className='m-5'>
-     <h4 className="mb-3">U-value Calculation</h4>
+     <h4 className="mb-3">Calculation</h4>
      <Form noValidate>
         <Row className="align-items-center">
         <Col className="mb">
@@ -98,7 +98,7 @@ const BuildingPhysicsAppCalc = () => {
         <div>
         <Button href="/building-physics-app1" className="btn mb-2 btn-primary" type="button">Back</Button>  
         <Button onClick={Start} className="btn mb-2 btn-danger" type="button">Calculate</Button>
-        <p><i>Please keep clicking untill the values stay the same.</i></p>
+        <p><i>Please keep clicking untill the values stop updating.</i></p>
         </div>
         </Row>
         <Row>

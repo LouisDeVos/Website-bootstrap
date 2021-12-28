@@ -1,5 +1,4 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel'
 
 function Project1Carousel () {

@@ -16,6 +16,7 @@ const Contact = () => {
           <Col>
           <img className="my-4 d-block mx-auto" 
               src="http://localhost:5000/Louis-De-Vos/data/images/contact-img.jpg"
+              alt='A big office...'
               width="900"
           /> 
           </Col>
