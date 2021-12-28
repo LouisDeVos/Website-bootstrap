@@ -1,0 +1,62 @@
+Uitleg bij React Web App - Building Informatics
+
+---------------------------------------------------------------------------------------------------------------
+
+De website bestaat uit twee delen:
+
+-Deel 1: voorstelling projecten en bureau (voornamelijk HTML en stijl met Bootstrap 4 zonder complexe CSS)
+-Deel 2: berekening en beheer van bouwfysische waarden (fetch API 'PUT' en 'GET', JavaScript en Bootstrap 4 Forms)
+
+---------------------------------------------------------------------------------------------------------------
+
+DEEL 1 --> Alle afbeeldingen worden opgeroepen uit Solid Server
+
+-Home Page: Bootstrap Carrousel met 3 projecten, afbeeldingen zijn klikbaar en verwijzen naar de projectpagina's
+-Projects: Overzicht van projecten met Bootstrap Cards
+-3 projectpagina's: Bootstrap grid en Carrousel
+-About us/Contact: Bootstrap grid
+
+DEEL 2
+
+De oorspronkelijke bedoeling was om het transmissiewarmteverlies te berekenen van een heel gebouw, maar dat leek
+te complex voor een eerste opdracht met fetch API en JS, omdat er dan heel veel inputs moeten beheerd worden.
+
+Nu is de app beperkt tot het berekenen van het transmissiewarmteverlies van een enkel bouwdeel:
+
+1. Invoer van projectinformatie: naam, persoon, oppervlakte, binnen- en buitentemperatuur, ...
+   
+   Momenteel is enkel warmteverlies direct naar de buitenomgeving mogelijk, omdat andere types meer input vragen.
+   De data wordt opgeslaan in een JSON file op de Solid Server, om de informatie te wijzigen kan het heringevoerd worden
+   omdat alles dan overgeschreven wordt (ik heb nog geen manier gevonden om lijnen toe te voegen in JSON zonder de al
+   aanwezige lijnen daarmee te verwijderen). De inputs worden in 'states' geplaatst met useState.
+
+2. Invoer van materiaallagen: materiaal, lambda-waarde en dikte
+   
+   Per laag gebeurt er een invoer en de materiaalnaam en berekende R-waarde (d/lambda) worden in een lijst weergegeven.
+   Het totaal van de R-waarden van de lagen wordt bij elke invoer geüpdatet met '_.sumBy' (een Lodash functie) die automatisch
+   de som van alle waarden van een array berekent.
+   Uiteindelijk wordt het totaal opgeslaan in de map van het project, met de projectnaam als 'key' dat nog eens ingegeven
+   moet worden.
+
+3. Berekening van het transmissiewarmteverlies
+
+   Deze gebeurt in JS in twee stappen:
+
+   U = (R_se + R_tot + R_si)^-1  ->  R_si is afhankelijk van de richting van de warmtestroom, daarom de keuze bij punt 1 (wall/floor/ceiling)
+                                            (met 'if else if')
+
+   Warmteverlies = A * U * (T_i - T_e)
+
+   Alle nodige variabelen worden hier opgeroepen uit de JSON files op de Solid Server (async await fetch) en tijdelijk opgeslaan met useState.
+
+   ---> Deze laatste stap kan getest worden met het al aanwezige project in de Solid Server, door "test" in te geven bij 'Project Name'.
+   ---> In GitHub heb ik nog drie voorbeelden van bouwdelen uit een vorige opdracht toegevoegd (wand/dak/vloer) die ik gebruikt heb om de app te testen.
+
+Er is nog een extra app 'Building Physics Database':
+
+Die was er oorspronkelijk om de wintertemperaturen van Belgische steden in in te geven (gevonden in de nationale bijlage van EN12831)
+en om een materialendatabase op te maken.
+Zo kon de gebruiker een stad kiezen uit een dropdown met de juiste temperatuur uit de server als waarde, idem voor de keuze van de materiaallagen
+met de juiste lambda-waarde. Maar het toepassen van een fetch API voor de waardes uit een dropdown zal ik nog moeten onderzoeken.
+
+28/12/2012
